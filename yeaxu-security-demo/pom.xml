@@ -14,5 +14,9 @@
 			<artifactId>yeaxu-security-browser</artifactId>
 			<version>${yeaxu.security.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
 	</dependencies>
 </project>
