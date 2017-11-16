@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.yeaxu.security.core.properties.SecurityProperties;
@@ -21,6 +22,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private AuthenticationSuccessHandler yeaxuAuthenticationSuccessHandler;
 	
+	@Autowired
+	private AuthenticationFailureHandler yeaxuAuthenticationFailureHandler;
+	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -33,6 +37,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 			.loginPage("/authentication/require")  
 			.loginProcessingUrl("/authentication/form") 
 			.successHandler(yeaxuAuthenticationSuccessHandler)  //设置自定义成功处理器
+			.failureHandler(yeaxuAuthenticationFailureHandler)
 			.and()
 //		http.httpBasic()  //启用httpBasic登录
 			.authorizeRequests()
