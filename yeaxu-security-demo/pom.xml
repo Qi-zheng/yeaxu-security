@@ -7,7 +7,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>yeaxu-security-demo</artifactId>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.yeaxu.security</groupId>
@@ -19,9 +19,9 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
 		<dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-freemarker</artifactId>
-        </dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-freemarker</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-aop</artifactId>
@@ -45,4 +45,25 @@
 			<artifactId>wiremock</artifactId>
 		</dependency>
 	</dependencies>
+
+	<!--springboot 打包插件 -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>1.5.8.RELEASE</version>
+				<executions>
+					<execution>
+						<goals>
+							<!--重新打包 -->
+							<goal>repackage</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<!--包名 -->
+		<finalName>demo</finalName>
+	</build>
 </project>
