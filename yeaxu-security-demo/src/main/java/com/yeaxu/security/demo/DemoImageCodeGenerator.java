@@ -17,7 +17,7 @@ import com.yeaxu.security.core.validate.code.ValidateCodeGenerator;
 public class DemoImageCodeGenerator implements ValidateCodeGenerator {
 
 	@Override
-	public ImageCode createImageCode(ServletWebRequest request) {
+	public ImageCode generate(ServletWebRequest request) {
 		System.out.println("更高级的图形验证码");
 		return null;
 	}
