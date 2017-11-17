@@ -1,7 +1,9 @@
-package com.yeaxu.security.core.validate.code;
+package com.yeaxu.security.core.validate.code.image;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
+
+import com.yeaxu.security.core.validate.code.ValidateCode;
 
 public class ImageCode extends ValidateCode {
 	private BufferedImage image;

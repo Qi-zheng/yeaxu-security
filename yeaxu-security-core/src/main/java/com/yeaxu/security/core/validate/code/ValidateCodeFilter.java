@@ -21,7 +21,9 @@ import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.yeaxu.security.core.properties.SecurityConstants;
 import com.yeaxu.security.core.properties.SecurityProperties;
+import com.yeaxu.security.core.validate.code.image.ImageCode;
 
 /**
  * 实现InitializingBean接口是为了实现afterPropertiesSet方法，以便了在读取配置初始化完成后在调用该方法
@@ -75,7 +77,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	}
 
 	private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-		ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, ValidateCodeController.SESSION_KEY);
+		ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, getSessionKey(request));
 		String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
 		
 		if(StringUtils.isBlank(codeInRequest)) {
@@ -87,14 +89,24 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 		}
 		
 		if(codeInSession.isExpried()) {
-			sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
+			sessionStrategy.removeAttribute(request, getSessionKey(request));
 			throw new ValidateCodeException("验证码已过期");
 		}
 		
 		if(!StringUtils.equals(codeInRequest, codeInSession.getCode())) {
 			throw new ValidateCodeException("验证码不匹配");
 		}
-		sessionStrategy.removeAttribute(request, ValidateCodeController.SESSION_KEY);
+		sessionStrategy.removeAttribute(request, getSessionKey(request));
+	}
+	
+	/**
+	 * 构建验证码放入session时的key
+	 * 
+	 * @param request
+	 * @return
+	 */
+	private String getSessionKey(ServletWebRequest request) {
+		return SecurityConstants.SESSION_KEY_PREFIX + StringUtils.substringAfter(request.getRequest().getRequestURI(), "/code/");
 	}
 
 	public AuthenticationFailureHandler getYeaxuAuthenticationFailureHandler() {

@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.yeaxu.security.core.properties.SecurityProperties;
+import com.yeaxu.security.core.validate.code.image.ImageCodeGenerator;
 import com.yeaxu.security.core.validate.code.sms.DefaultSmsCodeSender;
 import com.yeaxu.security.core.validate.code.sms.SmsCodeSender;
 

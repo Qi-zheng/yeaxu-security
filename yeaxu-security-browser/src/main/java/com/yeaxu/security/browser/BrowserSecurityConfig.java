@@ -73,7 +73,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 //		http.httpBasic()  //启用httpBasic登录
 			.authorizeRequests()
 			.antMatchers("/authentication/require",
-					"/code/image",
+					"/code/*",
 					securityProperties.getBrowser().getLoginPage()).permitAll()
 			.anyRequest()
 			.authenticated()

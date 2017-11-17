@@ -2,8 +2,8 @@ package com.yeaxu.security.demo;
 
 import org.springframework.web.context.request.ServletWebRequest;
 
-import com.yeaxu.security.core.validate.code.ImageCode;
 import com.yeaxu.security.core.validate.code.ValidateCodeGenerator;
+import com.yeaxu.security.core.validate.code.image.ImageCode;
 
 /**
  * 以增量的方式开发代码

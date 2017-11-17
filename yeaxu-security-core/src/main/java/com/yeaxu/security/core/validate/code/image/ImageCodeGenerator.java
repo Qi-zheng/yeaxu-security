@@ -1,4 +1,4 @@
-package com.yeaxu.security.core.validate.code;
+package com.yeaxu.security.core.validate.code.image;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -6,13 +6,18 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import com.yeaxu.security.core.properties.SecurityProperties;
+import com.yeaxu.security.core.validate.code.ValidateCodeGenerator;
 
+@Component
 public class ImageCodeGenerator implements ValidateCodeGenerator {
 	
+	@Autowired
 	private SecurityProperties securityProperties;
 
 	@Override
