@@ -34,7 +34,7 @@ public class ValidateCodeController {
 	private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 	
 	/**
-	 * 创建验证码，根据验证码类型不同，调用不同�? {@link ValidateCodeProcessor}接口实现
+	 * 创建验证码，根据验证码类型不同，调用不同的 {@link ValidateCodeProcessor}接口实现
 	 * 
 	 * @param request
 	 * @param response

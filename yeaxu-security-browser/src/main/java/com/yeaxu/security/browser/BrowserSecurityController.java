@@ -34,16 +34,16 @@ public class BrowserSecurityController {
 	private SecurityProperties securityProperties;
 	
 	@RequestMapping("/authentication/require")
-	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)  //·µ»ØÖ¸¶¨×´Ì¬Âë
+	@ResponseStatus(code = HttpStatus.UNAUTHORIZED)  //è¿”å›æŒ‡å®šçŠ¶æ€ç 
 	public SimpleResponse requireAuthentication(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		if( savedRequest != null) {
 			String targetUrl = savedRequest.getRedirectUrl();
-			logger.info("Òı·¢ÖĞ×ªµÄÇëÇóÊÇ£º" + targetUrl);
+			logger.info("å¼•å‘ä¸­è½¬çš„è¯·æ±‚æ˜¯ï¼š" + targetUrl);
 			if(StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
 				redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
 			}
 		}
-		return new SimpleResponse("·ÃÎÊµÄ·şÎñĞèÒªÉí·İÈÏÖ¤");
+		return new SimpleResponse("è®¿é—®çš„æœåŠ¡éœ€è¦èº«ä»½è®¤è¯");
 	}
 }

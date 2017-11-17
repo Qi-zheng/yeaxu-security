@@ -1,7 +1,7 @@
 package com.yeaxu.security.core.properties;
 
 public class BrowserProperties {
-	private String loginPage = "/yeaxu-signIn.html";//Èç¹ûÓÃ»§²»Ö¸¶¨µÇÂ¼Ò³Ê±µÄÄ¬ÈÏÖµ
+	private String loginPage = "/yeaxu-signIn.html";//å¦‚æœç”¨æˆ·ä¸æŒ‡å®šç™»å½•é¡µæ—¶çš„é»˜è®¤å€¼
 	
 	private LoginType loginType = LoginType.JSON;
 

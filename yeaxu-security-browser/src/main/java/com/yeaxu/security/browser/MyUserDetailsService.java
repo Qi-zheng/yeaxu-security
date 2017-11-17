@@ -21,12 +21,12 @@ public class MyUserDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		logger.info("µÇÂ¼ÓÃ»§Ãû£º" + username);
-		//¼ÓÁËsalt£¬Í¬Ò»¸öÃÜÂëÃ¿´Î¼ÓÃÜ³öÀ´µÄ´®ÊÇ²»Í¬µÄ
+		logger.info("ç™»å½•ç”¨æˆ·åï¼š" + username);
+		//åŠ äº†saltï¼ŒåŒä¸€ä¸ªå¯†ç æ¯æ¬¡åŠ å¯†å‡ºæ¥çš„ä¸²æ˜¯ä¸åŒçš„
 		String password = passwordEncoder.encode("123456");
-		logger.info("Êı¾İ¿âÃÜÂëÊÇ£º" + password);
+		logger.info("æ•°æ®åº“å¯†ç æ˜¯ï¼š" + password);
 		return new User("Seven", password,
-				//ÓÃ»§Ğ£ÑéÂß¼­
+				//ç”¨æˆ·æ ¡éªŒé€»è¾‘
 				true, true, true, true, 
 				AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
 	}

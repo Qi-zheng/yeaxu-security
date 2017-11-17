@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import com.yeaxu.security.core.properties.SecurityProperties;
 
 @Configuration
-@EnableConfigurationProperties(SecurityProperties.class) //使配置读取器生效
+@EnableConfigurationProperties(SecurityProperties.class) //浣块厤缃鍙栧櫒鐢熸晥
 public class SecurityCoreConfig {
 
 }

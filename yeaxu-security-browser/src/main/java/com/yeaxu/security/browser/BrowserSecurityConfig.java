@@ -32,14 +32,14 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.formLogin()//ÆôÓÃ±íµ¥µÇÂ¼
-			// /yeaxu-signIn.html  »»³É/authentication/require  Ò»¸öurlÖĞ´¦Àí Ôò¿ÉÒÔÈÃÓÃ»§ÊµÏÖÅäÖÃµÇÂ¼Ò³µÄÄ¿µØ
+		http.formLogin()//å¯ç”¨è¡¨å•ç™»å½•
+			// /yeaxu-signIn.html  æ¢æˆ/authentication/require  ä¸€ä¸ªurlä¸­å¤„ç† åˆ™å¯ä»¥è®©ç”¨æˆ·å®ç°é…ç½®ç™»å½•é¡µçš„ç›®åœ°
 			.loginPage("/authentication/require")  
 			.loginProcessingUrl("/authentication/form") 
-			.successHandler(yeaxuAuthenticationSuccessHandler)  //ÉèÖÃ×Ô¶¨Òå³É¹¦´¦ÀíÆ÷
+			.successHandler(yeaxuAuthenticationSuccessHandler)  //è®¾ç½®è‡ªå®šä¹‰æˆåŠŸå¤„ç†å™¨
 			.failureHandler(yeaxuAuthenticationFailureHandler)
 			.and()
-//		http.httpBasic()  //ÆôÓÃhttpBasicµÇÂ¼
+//		http.httpBasic()  //å¯ç”¨httpBasicç™»å½•
 			.authorizeRequests()
 			.antMatchers("/authentication/require",
 					"/code/image",

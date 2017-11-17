@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "yeaxu.security")
 public class SecurityProperties {
 	
-	//²»new³öÀ´ÊµÀı£¬Èç¹ûÅäÖÃÎÄ¼şÃ»ÓĞÅäÖÃ¸ÃÖµÔò»á±¨¿ÕÖ¸Õë
+	//ä¸newå‡ºæ¥å®ä¾‹ï¼Œå¦‚æœé…ç½®æ–‡ä»¶æ²¡æœ‰é…ç½®è¯¥å€¼åˆ™ä¼šæŠ¥ç©ºæŒ‡é’ˆ
 	private BrowserProperties browser = new BrowserProperties();;
 
 	public BrowserProperties getBrowser() {

@@ -32,7 +32,7 @@ public class YeaxuAuthenticationFailureHandler extends SimpleUrlAuthenticationFa
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException exception) throws IOException, ServletException {
-		logger.info("µÇÂ¼Ê§°Ü");
+		logger.info("ç™»å½•å¤±è´¥");
 		if (LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
 			response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 			response.setContentType("application/json;charset=UTF-8");

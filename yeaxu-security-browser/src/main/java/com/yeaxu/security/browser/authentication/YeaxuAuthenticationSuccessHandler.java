@@ -18,8 +18,8 @@ import com.yeaxu.security.core.properties.LoginType;
 import com.yeaxu.security.core.properties.SecurityProperties;
 
 /**
- * AuthenticationSuccessHandlerÕı³£ÊµÏÖ´Ë½Ó¿Ú£¬ÏÖÔÚ¼Ì³ĞSpring Ä¬ÈÏµÄHandlerÀ´ÊµÏÖ
- * super.onAuthenticationSuccess(request, response, authentication);Ä¬ÈÏ¹¦ÄÜ
+ * AuthenticationSuccessHandleræ­£å¸¸å®ç°æ­¤æ¥å£ï¼Œç°åœ¨ç»§æ‰¿Spring é»˜è®¤çš„Handleræ¥å®ç°
+ * super.onAuthenticationSuccess(request, response, authentication);é»˜è®¤åŠŸèƒ½
  * @author seven
  *
  */
@@ -37,7 +37,7 @@ public class YeaxuAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
 			throws IOException, ServletException {
-		logger.info("µÇÂ¼³É¹¦");
+		logger.info("ç™»å½•æˆåŠŸ");
 		
 		if(LoginType.JSON.equals(securityProperties.getBrowser().getLoginType())) {
 			response.setContentType("application/json;charset=UTF-8");
