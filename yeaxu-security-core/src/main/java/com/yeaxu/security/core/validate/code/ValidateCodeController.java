@@ -13,11 +13,15 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
+
+import com.yeaxu.security.core.properties.SecurityProperties;
 
 /**
  * @author zhailiang
@@ -33,6 +37,9 @@ public class ValidateCodeController {
 
 	private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 	
+	@Autowired
+	private SecurityProperties securityProperties;
+	
 	/**
 	 * 创建验证码，根据验证码类型不同，调用不同的 {@link ValidateCodeProcessor}接口实现
 	 * 
@@ -45,15 +52,15 @@ public class ValidateCodeController {
 	public void createCode(HttpServletRequest request, HttpServletResponse response/*, @PathVariable String type*/)
 			throws Exception {
 		//validateCodeProcessorHolder.findValidateCodeProcessor(type).create(new ServletWebRequest(request, response));
-		ImageCode imageCode = createImageCode(request);
+		ImageCode imageCode = createImageCode(new ServletWebRequest(request));
 		
 		sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
 		ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
 	}
 
-	private ImageCode createImageCode(HttpServletRequest request) {
-		int width = 67;
-		int height = 23;
+	private ImageCode createImageCode(ServletWebRequest request) {
+		int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width", securityProperties.getCode().getImage().getWidth());
+		int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height", securityProperties.getCode().getImage().getHeight());
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 		Graphics g = image.getGraphics();
@@ -73,7 +80,7 @@ public class ValidateCodeController {
 		}
 
 		String sRand = "";
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++) {
 			String rand = String.valueOf(random.nextInt(10));
 			sRand += rand;
 			g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
@@ -82,7 +89,7 @@ public class ValidateCodeController {
 
 		g.dispose();
 
-		return new ImageCode(image, sRand, 60);
+		return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
 	}
 	
 	/**
