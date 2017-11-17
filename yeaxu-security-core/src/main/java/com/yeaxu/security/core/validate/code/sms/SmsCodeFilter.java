@@ -1,4 +1,4 @@
-package com.yeaxu.security.core.validate.code;
+package com.yeaxu.security.core.validate.code.sms;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -22,7 +22,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.yeaxu.security.core.properties.SecurityProperties;
-import com.yeaxu.security.core.validate.code.image.ImageCode;
+import com.yeaxu.security.core.validate.code.ValidateCode;
+import com.yeaxu.security.core.validate.code.ValidateCodeException;
 import com.yeaxu.security.core.validate.code.impl.AbstractValidateCodeProcessor;
 
 /**
@@ -30,7 +31,7 @@ import com.yeaxu.security.core.validate.code.impl.AbstractValidateCodeProcessor;
  * @author seven
  *
  */
-public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
+public class SmsCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
 	@Autowired
 	private AuthenticationFailureHandler yeaxuAuthenticationFailureHandler;
@@ -46,11 +47,11 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	@Override
 	public void afterPropertiesSet() throws ServletException {
 		super.afterPropertiesSet();
-		String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), ",");
+		String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getSms().getUrl(), ",");
 		for (String configUrl : configUrls) {
 			urls.add(configUrl);
 		}
-		urls.add("/authentication/form");
+		urls.add("/authentication/mobile");
 	}
 	
 	@Override
@@ -77,8 +78,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	}
 
 	private void validate(ServletWebRequest request) throws ServletRequestBindingException {
-		ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(request, getSessionKey(request));
-		String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "imageCode");
+		ValidateCode codeInSession = (ValidateCode) sessionStrategy.getAttribute(request, getSessionKey(request));
+		String codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), "smsCode");
 		
 		if(StringUtils.isBlank(codeInRequest)) {
 			throw new ValidateCodeException("验证码的值不能为空");
@@ -106,7 +107,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 	 * @return
 	 */
 	private String getSessionKey(ServletWebRequest request) {
-		return AbstractValidateCodeProcessor.SESSION_KEY_PREFIX + "IMAGE";
+		return AbstractValidateCodeProcessor.SESSION_KEY_PREFIX + "SMS";
 	}
 
 	public AuthenticationFailureHandler getYeaxuAuthenticationFailureHandler() {

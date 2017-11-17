@@ -16,8 +16,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import com.yeaxu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.yeaxu.security.core.properties.SecurityProperties;
 import com.yeaxu.security.core.validate.code.ValidateCodeFilter;
+import com.yeaxu.security.core.validate.code.sms.SmsCodeFilter;
 
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
@@ -34,6 +36,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 	
 	@Autowired
 	private DataSource dataSource;
@@ -57,7 +62,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 		validateCodeFilter.setYeaxuAuthenticationFailureHandler(yeaxuAuthenticationFailureHandler);
 		validateCodeFilter.setSecurityProperties(securityProperties);
 		validateCodeFilter.afterPropertiesSet();
-		http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+		SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+		smsCodeFilter.setYeaxuAuthenticationFailureHandler(yeaxuAuthenticationFailureHandler);
+		smsCodeFilter.setSecurityProperties(securityProperties);
+		smsCodeFilter.afterPropertiesSet();
+		
+		http.addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)
+			.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
 			.formLogin()//启用表单登录
 			// /yeaxu-signIn.html  换成/authentication/require  一个url中处理 则可以让用户实现配置登录页的目地
 			.loginPage("/authentication/require")  
@@ -79,6 +90,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter{
 			.authenticated()
 			.and()
 			.csrf()
-			.disable();
+			.disable()
+			.apply(smsCodeAuthenticationSecurityConfig);
 	}
 }

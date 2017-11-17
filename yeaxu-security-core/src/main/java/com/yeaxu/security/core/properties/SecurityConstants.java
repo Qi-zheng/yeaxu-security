@@ -50,9 +50,4 @@ public interface SecurityConstants {
 	 */
 	public static final String DEFAULT_SESSION_INVALID_URL = "/session/invalid";
 
-	/**
-	 * 验证码放入session中的前缀
-	 */
-	public static final String SESSION_KEY_PREFIX = "SESSION_KEY_FOR_CODE_";
-
 }
