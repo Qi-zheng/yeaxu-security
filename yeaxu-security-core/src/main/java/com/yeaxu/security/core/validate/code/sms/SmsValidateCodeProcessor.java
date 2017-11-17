@@ -19,7 +19,7 @@ import com.yeaxu.security.core.validate.code.impl.AbstractValidateCodeProcessor;
  *
  */
 @Component
-public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
+public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
 
 	/**
 	 * 短信验证码发送器

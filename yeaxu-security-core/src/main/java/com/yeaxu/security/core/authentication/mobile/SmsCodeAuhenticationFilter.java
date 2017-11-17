@@ -10,6 +10,8 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.util.Assert;
 
+import com.yeaxu.security.core.properties.SecurityConstants;
+
 public class SmsCodeAuhenticationFilter extends AbstractAuthenticationProcessingFilter{
 
 	// ~ Static fields/initializers
@@ -25,7 +27,7 @@ public class SmsCodeAuhenticationFilter extends AbstractAuthenticationProcessing
 
 	public SmsCodeAuhenticationFilter() {
 		//表单提交时的url
-		super(new AntPathRequestMatcher("/authentication/mobile", "POST"));
+		super(new AntPathRequestMatcher(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, "POST"));
 	}
 
 	// ~ Methods
@@ -39,7 +41,6 @@ public class SmsCodeAuhenticationFilter extends AbstractAuthenticationProcessing
 		}
 
 		String mobile = obtainMobile(request);
-
 		if (mobile == null) {
 			mobile = "";
 		}
