@@ -21,6 +21,11 @@ public class ImageCode {
 		this.code = code;
 		this.expireTime = expireTime;
 	}
+	
+	//没有redis等过期功能时，在程序中判断过期
+	public boolean isExpried() {
+		return LocalDateTime.now().isAfter(expireTime);
+	}
 
 	public BufferedImage getImage() {
 		return image;
