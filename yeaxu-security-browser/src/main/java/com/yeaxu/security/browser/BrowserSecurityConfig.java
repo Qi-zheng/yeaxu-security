@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import com.yeaxu.security.core.authentication.AbstractChannelSecurityConfig;
 import com.yeaxu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
@@ -35,6 +36,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
 	@Autowired
 	private DataSource dataSource;
+	
+	@Autowired
+	private SpringSocialConfigurer yeaxuSocialSecurityConfig;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -52,7 +56,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		applyPasswordAuthenticationConfig(http);
-		http.apply(validateCodeSecurityConfig)
+		http.apply(yeaxuSocialSecurityConfig)
+			.and()
+			.apply(validateCodeSecurityConfig)
 			.and()
 			.apply(smsCodeAuthenticationSecurityConfig)
 			.and()
