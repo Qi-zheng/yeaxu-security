@@ -49,5 +49,6 @@
 		<module>yeaxu-security-browser</module>
 		<module>yeaxu-security-app</module>
 		<module>yeaxu-security-demo</module>
+		<module>yeaxue-security-rbac</module>
 	</modules>
 </project>
