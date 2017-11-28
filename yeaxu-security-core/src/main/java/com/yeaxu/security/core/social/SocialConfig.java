@@ -13,12 +13,16 @@ import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
 import org.springframework.social.security.SpringSocialConfigurer;
 
+import com.yeaxu.security.core.properties.SecurityProperties;
+
 @Configuration
 @EnableSocial
 public class SocialConfig extends SocialConfigurerAdapter {
 
 	@Autowired
 	private DataSource dataSource;
+	@Autowired
+	private SecurityProperties securityProperties;
 	
 	
 	@Override
@@ -30,7 +34,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	
 	@Bean
 	public SpringSocialConfigurer yeaxuSocialSecurityConfig() {
-		return new SpringSocialConfigurer();
+		YeaxuSpringSocialConfigurer configurer = new YeaxuSpringSocialConfigurer(securityProperties.getSocial().getFilterProcessesUrl());
+		return configurer;
 	}
 	
 }
