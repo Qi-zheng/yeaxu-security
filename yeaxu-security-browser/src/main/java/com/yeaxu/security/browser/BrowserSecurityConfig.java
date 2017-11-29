@@ -13,6 +13,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.social.security.SpringSocialConfigurer;
 
+import com.yeaxu.security.browser.session.YeaxuExpiredSessionStrategy;
 import com.yeaxu.security.core.authentication.AbstractChannelSecurityConfig;
 import com.yeaxu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.yeaxu.security.core.properties.SecurityConstants;
@@ -67,13 +68,20 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 			.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
 			.userDetailsService(userDetailsService)
 			.and()
+			.sessionManagement()
+				.invalidSessionUrl("/session/invalid")
+				.maximumSessions(1)
+				.maxSessionsPreventsLogin(true)  //是否保护登录，只允许一个用户登录
+				.expiredSessionStrategy(new YeaxuExpiredSessionStrategy())
+				.and()
+			.and()
 			.authorizeRequests()
 			.antMatchers(
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
 				securityProperties.getBrowser().getLoginPage(),
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-				"/user/regist", securityProperties.getBrowser().getSignUpUrl())
+				"/user/regist", "/session/invalid", securityProperties.getBrowser().getSignUpUrl())
 				.permitAll()
 			.anyRequest()
 			.authenticated()
