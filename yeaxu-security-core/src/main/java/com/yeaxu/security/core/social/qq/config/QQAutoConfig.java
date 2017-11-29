@@ -1,4 +1,4 @@
-package com.yeaxu.security.core.social.config;
+package com.yeaxu.security.core.social.qq.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;

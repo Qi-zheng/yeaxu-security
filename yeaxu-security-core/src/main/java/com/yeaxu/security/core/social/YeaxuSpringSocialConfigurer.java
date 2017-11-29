@@ -18,4 +18,6 @@ public class YeaxuSpringSocialConfigurer extends SpringSocialConfigurer {
 		filter.setFilterProcessesUrl(filterProcessesUrl);
 		return (T)filter;
 	}
+	
+	
 }

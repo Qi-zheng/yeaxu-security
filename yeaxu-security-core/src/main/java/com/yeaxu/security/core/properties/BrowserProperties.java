@@ -1,11 +1,22 @@
 package com.yeaxu.security.core.properties;
 
 public class BrowserProperties {
+	
+	private String signUpUrl = "/yeaxu-signUp.html";
+	
 	private String loginPage = "/yeaxu-signIn.html";//如果用户不指定登录页时的默认值
 	
 	private LoginType loginType = LoginType.JSON;
 	
 	private int rememberMeSeconds = 3600;
+
+	public String getSignUpUrl() {
+		return signUpUrl;
+	}
+
+	public void setSignUpUrl(String signUpUrl) {
+		this.signUpUrl = signUpUrl;
+	}
 
 	public String getLoginPage() {
 		return loginPage;

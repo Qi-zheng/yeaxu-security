@@ -56,11 +56,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		applyPasswordAuthenticationConfig(http);
-		http.apply(yeaxuSocialSecurityConfig)
-			.and()
-			.apply(validateCodeSecurityConfig)
+		http.apply(validateCodeSecurityConfig)
 			.and()
 			.apply(smsCodeAuthenticationSecurityConfig)
+			.and()
+			.apply(yeaxuSocialSecurityConfig)
 			.and()
 			.rememberMe()
 			.tokenRepository(persistentTokenRepository())
@@ -73,7 +73,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
 				securityProperties.getBrowser().getLoginPage(),
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-				"/user/regist")
+				"/user/regist", securityProperties.getBrowser().getSignUpUrl())
 				.permitAll()
 			.anyRequest()
 			.authenticated()
