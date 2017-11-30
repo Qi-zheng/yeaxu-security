@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yeaxu.security.browser.support.SimpleResponse;
+import com.yeaxu.security.core.support.SimpleResponse;
 
 public class YeaxuLogoutSuccessHandler implements LogoutSuccessHandler {
 

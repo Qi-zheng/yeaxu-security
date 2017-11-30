@@ -40,7 +40,7 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 		return new SocialUser("Seven", password,
 				//用户校验逻辑
 				true, true, true, true, 
-				AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
+				AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN,ROLE_USER"));
 	}
 
 }

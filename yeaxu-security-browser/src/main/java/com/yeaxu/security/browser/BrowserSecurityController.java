@@ -21,9 +21,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
 
-import com.yeaxu.security.browser.support.SimpleResponse;
 import com.yeaxu.security.browser.support.SocialUserInfo;
 import com.yeaxu.security.core.properties.SecurityProperties;
+import com.yeaxu.security.core.support.SimpleResponse;
 
 
 @RestController

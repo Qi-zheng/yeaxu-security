@@ -1,4 +1,4 @@
-package com.yeaxu.security.browser.support;
+package com.yeaxu.security.core.support;
 
 public class SimpleResponse {
 	private Object content;

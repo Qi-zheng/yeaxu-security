@@ -1,4 +1,4 @@
-package com.yeaxu.security.browser.authentication;
+package com.yeaxu.security.app.authtication;
 
 import java.io.IOException;
 

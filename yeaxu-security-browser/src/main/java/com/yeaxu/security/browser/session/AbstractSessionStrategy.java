@@ -15,7 +15,7 @@ import org.springframework.security.web.util.UrlUtils;
 import org.springframework.util.Assert;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yeaxu.security.browser.support.SimpleResponse;
+import com.yeaxu.security.core.support.SimpleResponse;
 
 public class AbstractSessionStrategy {
 

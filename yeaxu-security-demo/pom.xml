@@ -9,9 +9,14 @@
 	<artifactId>yeaxu-security-demo</artifactId>
 
 	<dependencies>
-		<dependency>
+		<!-- <dependency>
 			<groupId>com.yeaxu.security</groupId>
 			<artifactId>yeaxu-security-browser</artifactId>
+			<version>${yeaxu.security.version}</version>
+		</dependency> -->
+		<dependency>
+			<groupId>com.yeaxu.security</groupId>
+			<artifactId>yeaxu-security-app</artifactId>
 			<version>${yeaxu.security.version}</version>
 		</dependency>
 		<dependency>
