@@ -12,6 +12,7 @@ import org.springframework.social.security.SpringSocialConfigurer;
 import com.yeaxu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.yeaxu.security.core.properties.SecurityConstants;
 import com.yeaxu.security.core.properties.SecurityProperties;
+import com.yeaxu.security.core.validate.code.ValidateCodeSecurityConfig;
 
 /**
  * 
@@ -23,14 +24,14 @@ import com.yeaxu.security.core.properties.SecurityProperties;
 public class YeaxuResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	protected AuthenticationSuccessHandler yeaxuAuthenticationSuccessHandler;
-	
 	@Autowired
 	protected AuthenticationFailureHandler yeaxuAuthenticationFailureHandler;
 	@Autowired
 	private SecurityProperties securityProperties;
 	@Autowired
 	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
-	
+	@Autowired
+	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 	@Autowired
 	private SpringSocialConfigurer yeaxuSocialSecurityConfig;
 	
@@ -42,8 +43,8 @@ public class YeaxuResourceServerConfig extends ResourceServerConfigurerAdapter {
 			.loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
 			.successHandler(yeaxuAuthenticationSuccessHandler)//设置自定义成功处理器 
 			.failureHandler(yeaxuAuthenticationFailureHandler);
-		http//.apply(validateCodeSecurityConfig)
-			//.and()
+		http.apply(validateCodeSecurityConfig)
+			.and()
 				.apply(smsCodeAuthenticationSecurityConfig)
 			.and()
 				.apply(yeaxuSocialSecurityConfig)
