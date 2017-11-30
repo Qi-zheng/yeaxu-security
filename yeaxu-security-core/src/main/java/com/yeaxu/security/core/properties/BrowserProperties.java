@@ -4,6 +4,8 @@ public class BrowserProperties {
 	
 	private String signUpUrl = "/yeaxu-signUp.html";
 	
+	private String signOutUrl;
+	
 	private String loginPage = "/yeaxu-signIn.html";//如果用户不指定登录页时的默认值
 	
 	private LoginType loginType = LoginType.JSON;
@@ -51,6 +53,14 @@ public class BrowserProperties {
 
 	public void setRememberMeSeconds(int rememberMeSeconds) {
 		this.rememberMeSeconds = rememberMeSeconds;
+	}
+
+	public String getSignOutUrl() {
+		return signOutUrl;
+	}
+
+	public void setSignOutUrl(String signOutUrl) {
+		this.signOutUrl = signOutUrl;
 	}
 	
 }

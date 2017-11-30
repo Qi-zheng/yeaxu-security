@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -48,6 +49,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	
 	@Autowired
 	private InvalidSessionStrategy invalidSessionStrategy;
+	
+	@Autowired
+	private LogoutSuccessHandler logoutSuccessHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -83,13 +87,22 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 					.expiredSessionStrategy(sessionInformationExpiredStrategy)  //当session因并发间登录失效时的策略
 			.and()
 			.and()
+				.logout()
+					.logoutUrl("/signOut")
+//					.logoutSuccessUrl("/yeaxu-signOut.html")  //不能和logoutSuccessHandler同时使用
+					.logoutSuccessHandler(logoutSuccessHandler)
+					.deleteCookies("JSESSIONID")   //如果不配置这一项，则会出现到了yeaxu-signOut.html页面后检查session,出现跳转session过期页面
+			.and()
 				.authorizeRequests()
 					.antMatchers(
 						SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 						SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-						securityProperties.getBrowser().getLoginPage(),
 						SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-						"/user/regist", "/session/invalid", securityProperties.getBrowser().getSignUpUrl())
+						securityProperties.getBrowser().getLoginPage(),
+						securityProperties.getBrowser().getSignOutUrl(),
+						securityProperties.getBrowser().getSignUpUrl(), 
+						securityProperties.getBrowser().getSession().getInvalidSessionUrl(),
+						"/user/regist")
 						.permitAll()
 					.anyRequest().authenticated()
 			.and()

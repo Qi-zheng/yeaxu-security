@@ -5,7 +5,7 @@ public class SessionProperties {
 	
 	private boolean maxSessionsPreventsLogin = true;
 	
-	private String invalidSessionUrl = "/session/yeaxu-session-invalid.html";
+	private String invalidSessionUrl = "/session/yeaxu-session-invalid";
 	
 	public String getInvalidSessionUrl() {
 		return invalidSessionUrl;
