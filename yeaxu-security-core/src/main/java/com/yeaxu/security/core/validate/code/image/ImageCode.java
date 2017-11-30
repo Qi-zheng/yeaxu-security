@@ -6,6 +6,11 @@ import java.time.LocalDateTime;
 import com.yeaxu.security.core.validate.code.ValidateCode;
 
 public class ImageCode extends ValidateCode {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1703853618186537605L;
+	
 	private BufferedImage image;
 	
 	public ImageCode(BufferedImage image, String code, int expireIn) {
