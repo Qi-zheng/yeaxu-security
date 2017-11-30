@@ -7,12 +7,20 @@ import javax.servlet.ServletException;
 import org.springframework.security.web.session.SessionInformationExpiredEvent;
 import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 
-public class YeaxuExpiredSessionStrategy implements SessionInformationExpiredStrategy {
+public class YeaxuExpiredSessionStrategy extends AbstractSessionStrategy implements SessionInformationExpiredStrategy {
+
+	public YeaxuExpiredSessionStrategy(String invalidSessionUrl) {
+		super(invalidSessionUrl);
+	}
 
 	@Override
 	public void onExpiredSessionDetected(SessionInformationExpiredEvent event) throws IOException, ServletException {
-		event.getResponse().setContentType("application/json;charset=UTF-8");
-		event.getResponse().getWriter().write("并发登录");
+		onSessionInvalid(event.getRequest(), event.getResponse());
+	}
+	
+	@Override
+	protected boolean isConcurrency() {
+		return true;
 	}
 
 }

@@ -11,9 +11,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
-import com.yeaxu.security.browser.session.YeaxuExpiredSessionStrategy;
 import com.yeaxu.security.core.authentication.AbstractChannelSecurityConfig;
 import com.yeaxu.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.yeaxu.security.core.properties.SecurityConstants;
@@ -40,6 +41,13 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	
 	@Autowired
 	private SpringSocialConfigurer yeaxuSocialSecurityConfig;
+	
+
+	@Autowired
+	private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+	
+	@Autowired
+	private InvalidSessionStrategy invalidSessionStrategy;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -59,35 +67,33 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 		applyPasswordAuthenticationConfig(http);
 		http.apply(validateCodeSecurityConfig)
 			.and()
-			.apply(smsCodeAuthenticationSecurityConfig)
+				.apply(smsCodeAuthenticationSecurityConfig)
 			.and()
-			.apply(yeaxuSocialSecurityConfig)
+				.apply(yeaxuSocialSecurityConfig)
 			.and()
-			.rememberMe()
-			.tokenRepository(persistentTokenRepository())
-			.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-			.userDetailsService(userDetailsService)
+				.rememberMe()
+					.tokenRepository(persistentTokenRepository())
+					.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+					.userDetailsService(userDetailsService)
 			.and()
-			.sessionManagement()
-				.invalidSessionUrl("/session/invalid")
-				.maximumSessions(1)
-				.maxSessionsPreventsLogin(true)  //是否保护登录，只允许一个用户登录
-				.expiredSessionStrategy(new YeaxuExpiredSessionStrategy())
-				.and()
+				.sessionManagement()
+					.invalidSessionStrategy(invalidSessionStrategy)  //当session不可用时的策略
+					.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())  //同一个用户最大的登录数
+					.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())  //是否保护登录，只允许一个用户登录
+					.expiredSessionStrategy(sessionInformationExpiredStrategy)  //当session因并发间登录失效时的策略
 			.and()
-			.authorizeRequests()
-			.antMatchers(
-				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-				securityProperties.getBrowser().getLoginPage(),
-				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
-				"/user/regist", "/session/invalid", securityProperties.getBrowser().getSignUpUrl())
-				.permitAll()
-			.anyRequest()
-			.authenticated()
 			.and()
-			.csrf().disable();
-			
+				.authorizeRequests()
+					.antMatchers(
+						SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+						SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+						securityProperties.getBrowser().getLoginPage(),
+						SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX+"/*",
+						"/user/regist", "/session/invalid", securityProperties.getBrowser().getSignUpUrl())
+						.permitAll()
+					.anyRequest().authenticated()
+			.and()
+				.csrf().disable();
 	}
 
 }

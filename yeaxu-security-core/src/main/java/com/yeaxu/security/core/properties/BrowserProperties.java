@@ -9,6 +9,17 @@ public class BrowserProperties {
 	private LoginType loginType = LoginType.JSON;
 	
 	private int rememberMeSeconds = 3600;
+	
+	private SessionProperties session = new SessionProperties();
+	
+
+	public SessionProperties getSession() {
+		return session;
+	}
+
+	public void setSession(SessionProperties session) {
+		this.session = session;
+	}
 
 	public String getSignUpUrl() {
 		return signUpUrl;
