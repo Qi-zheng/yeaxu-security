@@ -21,10 +21,15 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Autowired
 	private SecurityProperties securityProperties;
 	
+
+	@Autowired(required = false)
+	private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
+	
 	@Bean
 	public SpringSocialConfigurer yeaxuSocialSecurityConfig() {
 		YeaxuSpringSocialConfigurer configurer = new YeaxuSpringSocialConfigurer(securityProperties.getSocial().getFilterProcessesUrl());
 		configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+		configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
 		return configurer;
 	}
 	

@@ -1,6 +1,5 @@
 package com.yeaxu.security.browser.validate.code.impl;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.stereotype.Component;
@@ -55,8 +54,7 @@ public class SessionValidateCodeRepository implements ValidateCodeRepository {
 	 * @return
 	 */
 	private ValidateCodeType getValidateCodeType(ServletWebRequest request) {
-		String type = StringUtils.substringBefore(getClass().getSimpleName(), "ValidateCodeProcessor");
-		return ValidateCodeType.valueOf(type.toUpperCase());
+		return ValidateCodeType.valueOf("IMAGE");
 	}
 
 }

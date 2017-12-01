@@ -33,6 +33,7 @@ public class QQAutoConfig extends SocialAutoConfigurerAdapter {
 
 	@Autowired(required = false)
 	private ConnectionSignUp connectionSignUp;
+	
 
 	@Override
 	protected ConnectionFactory<?> createConnectionFactory() {
