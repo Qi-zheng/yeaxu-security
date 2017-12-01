@@ -7,8 +7,6 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.web.HttpSessionSessionStrategy;
-import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -17,6 +15,7 @@ import com.yeaxu.security.core.validate.code.ValidateCode;
 import com.yeaxu.security.core.validate.code.ValidateCodeException;
 import com.yeaxu.security.core.validate.code.ValidateCodeGenerator;
 import com.yeaxu.security.core.validate.code.ValidateCodeProcessor;
+import com.yeaxu.security.core.validate.code.ValidateCodeRepository;
 import com.yeaxu.security.core.validate.code.ValidateCodeType;
 
 /**
@@ -25,15 +24,15 @@ import com.yeaxu.security.core.validate.code.ValidateCodeType;
  */
 public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
-	/**
-	 * 操作session的工具类
-	 */
-	private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+	
 	/**
 	 * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
 	 */
 	@Autowired
 	private Map<String, ValidateCodeGenerator> validateCodeGenerators;
+	
+	@Autowired
+	private ValidateCodeRepository validateCodeRepository;
 
 	
 	@Override
@@ -67,19 +66,10 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 	 * @param validateCode
 	 */
 	private void save(ServletWebRequest request, C validateCode) {
-		sessionStrategy.setAttribute(request, getSessionKey(request), new ValidateCode(validateCode.getCode(), validateCode.getExpireTime()));
+		ValidateCode code = new ValidateCode(validateCode.getCode(), validateCode.getExpireTime());
+		validateCodeRepository.save(request, code, getValidateCodeType(request));
 	}
 
-	/**
-	 * 构建验证码放入session时的key
-	 * 
-	 * @param request
-	 * @return
-	 */
-	private String getSessionKey(ServletWebRequest request) {
-		return SESSION_KEY_PREFIX + getValidateCodeType(request).toString().toUpperCase();
-	}
-	
 
 	/**
 	 * 发送校验码，由子类实现
@@ -100,15 +90,14 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 		String type = StringUtils.substringBefore(getClass().getSimpleName(), "ValidateCodeProcessor");
 		return ValidateCodeType.valueOf(type.toUpperCase());
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void validate(ServletWebRequest request) {
 
 		ValidateCodeType processorType = getValidateCodeType(request);
-		String sessionKey = getSessionKey(request);
 
-		C codeInSession = (C) sessionStrategy.getAttribute(request, sessionKey);
+		C codeInSession = (C) validateCodeRepository.get(request, processorType);
 
 		String codeInRequest;
 		try {
@@ -127,15 +116,14 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 		}
 
 		if (codeInSession.isExpried()) {
-			sessionStrategy.removeAttribute(request, sessionKey);
+			validateCodeRepository.remove(request, processorType);
 			throw new ValidateCodeException(processorType + "验证码已过期");
 		}
 
 		if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
 			throw new ValidateCodeException(processorType + "验证码不匹配");
 		}
-
-		sessionStrategy.removeAttribute(request, sessionKey);
+		validateCodeRepository.remove(request, processorType);
 	}
 
 }
