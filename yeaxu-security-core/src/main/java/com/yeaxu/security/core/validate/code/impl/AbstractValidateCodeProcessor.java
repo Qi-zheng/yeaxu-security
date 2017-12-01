@@ -82,7 +82,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
 	/**
 	 * 根据请求的url获取校验码的类型
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 */
